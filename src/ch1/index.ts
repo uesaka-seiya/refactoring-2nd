@@ -1,7 +1,7 @@
-function outputHello(text: string): void {
-  console.log(`Hello ${text}!`);
-}
+import { statement } from './statement';
+import * as plays from './plays.json';
+import invoices = require('./invoices.json');
 
-const textWorld: string = 'World';
-
-outputHello(textWorld);
+invoices.forEach((invoice) => {
+  console.log(statement(invoice, plays));
+});

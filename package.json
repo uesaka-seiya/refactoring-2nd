@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "prettify": "prettier --write 'src/*/*.{js,ts}'"
+    "prettify": "prettier --write 'src/*/*.{js,ts}'",
+    "run:1": "ts-node src/ch1/index.ts"
   },
   "devDependencies": {
     "@types/node": "^17.0.35",
