@@ -30,22 +30,22 @@ export function statement(invoice: Invoice, plays: { [playID: string]: Play }): 
 }
 
 const amountFor = (performance: Performance, play: Play) => {
-  let thisAmount = 0;
+  let result = 0;
   switch (play.type) {
     case 'tragedy':
-      thisAmount = 40000;
+      result = 40000;
       if (performance.audience > 30) {
-        thisAmount += 1000 * (performance.audience - 30);
+        result += 1000 * (performance.audience - 30);
       }
       break;
     case 'comedy':
-      thisAmount = 30000;
+      result = 30000;
       if (performance.audience > 20) {
-        thisAmount += 300 * performance.audience;
+        result += 300 * performance.audience;
       }
       break;
     default:
       throw new Error(`unknown type: ${play.type}`);
   }
-  return thisAmount;
+  return result;
 };
