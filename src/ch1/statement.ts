@@ -11,8 +11,33 @@ export function statement(invoice: Invoice, plays: { [playID: string]: Play }): 
     minimumFractionDigits: 2,
   }).format;
 
+  const playFor = (aPerformance: Performance) => {
+    return plays[aPerformance.playID];
+  };
+
+  const amountFor = (aPerformance: Performance, play: Play) => {
+    let result = 0;
+    switch (play.type) {
+      case 'tragedy':
+        result = 40000;
+        if (aPerformance.audience > 30) {
+          result += 1000 * (aPerformance.audience - 30);
+        }
+        break;
+      case 'comedy':
+        result = 30000;
+        if (aPerformance.audience > 20) {
+          result += 300 * aPerformance.audience;
+        }
+        break;
+      default:
+        throw new Error(`unknown type: ${play.type}`);
+    }
+    return result;
+  };
+
   for (let performance of invoice.performances) {
-    const play = plays[performance.playID];
+    const play = playFor(performance);
     let thisAmount = amountFor(performance, play);
 
     // ボリューム特典のポイントを加算
@@ -28,24 +53,3 @@ export function statement(invoice: Invoice, plays: { [playID: string]: Play }): 
   result += `You earned ${volumeCredits} credits\n`;
   return result;
 }
-
-const amountFor = (aPerformance: Performance, play: Play) => {
-  let result = 0;
-  switch (play.type) {
-    case 'tragedy':
-      result = 40000;
-      if (aPerformance.audience > 30) {
-        result += 1000 * (aPerformance.audience - 30);
-      }
-      break;
-    case 'comedy':
-      result = 30000;
-      if (aPerformance.audience > 20) {
-        result += 300 * aPerformance.audience;
-      }
-      break;
-    default:
-      throw new Error(`unknown type: ${play.type}`);
-  }
-  return result;
-};
