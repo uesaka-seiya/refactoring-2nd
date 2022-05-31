@@ -29,19 +29,19 @@ export function statement(invoice: Invoice, plays: { [playID: string]: Play }): 
   return result;
 }
 
-const amountFor = (performance: Performance, play: Play) => {
+const amountFor = (aPerformance: Performance, play: Play) => {
   let result = 0;
   switch (play.type) {
     case 'tragedy':
       result = 40000;
-      if (performance.audience > 30) {
-        result += 1000 * (performance.audience - 30);
+      if (aPerformance.audience > 30) {
+        result += 1000 * (aPerformance.audience - 30);
       }
       break;
     case 'comedy':
       result = 30000;
-      if (performance.audience > 20) {
-        result += 300 * performance.audience;
+      if (aPerformance.audience > 20) {
+        result += 300 * aPerformance.audience;
       }
       break;
     default:
