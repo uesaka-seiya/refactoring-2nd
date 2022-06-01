@@ -1,16 +1,6 @@
 import type { Invoice, Play, Performance } from './types';
 
 export function statement(invoice: Invoice, plays: { [playID: string]: Play }): string {
-  let totalAmount = 0;
-  let volumeCredits = 0;
-  let result = `Statement for ${invoice.customer}\n`;
-
-  const format = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  }).format;
-
   const playFor = (aPerformance: Performance) => {
     return plays[aPerformance.playID];
   };
@@ -35,6 +25,16 @@ export function statement(invoice: Invoice, plays: { [playID: string]: Play }): 
     }
     return result;
   };
+
+  let totalAmount = 0;
+  let volumeCredits = 0;
+  let result = `Statement for ${invoice.customer}\n`;
+
+  const format = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+  }).format;
 
   for (let performance of invoice.performances) {
     // ボリューム特典のポイントを加算
