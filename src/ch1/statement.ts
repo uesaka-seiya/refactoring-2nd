@@ -15,9 +15,9 @@ export function statement(invoice: Invoice, plays: { [playID: string]: Play }): 
     return plays[aPerformance.playID];
   };
 
-  const amountFor = (aPerformance: Performance, play: Play) => {
+  const amountFor = (aPerformance: Performance) => {
     let result = 0;
-    switch (play.type) {
+    switch (playFor(aPerformance).type) {
       case 'tragedy':
         result = 40000;
         if (aPerformance.audience > 30) {
@@ -31,21 +31,21 @@ export function statement(invoice: Invoice, plays: { [playID: string]: Play }): 
         }
         break;
       default:
-        throw new Error(`unknown type: ${play.type}`);
+        throw new Error(`unknown type: ${playFor(aPerformance).type}`);
     }
     return result;
   };
 
   for (let performance of invoice.performances) {
-    let thisAmount = amountFor(performance, playFor(performance));
-
     // ボリューム特典のポイントを加算
     volumeCredits += Math.max(performance.audience - 30, 0);
     // 喜劇のときは10人につき、さらにポイントを加算
     if (playFor(performance).type === 'comedy') volumeCredits += Math.floor(performance.audience / 5);
     // 注文の内訳を出力
-    result += `  ${playFor(performance).name}: ${format(thisAmount / 100)} (${performance.audience} seats)\n`;
-    totalAmount += thisAmount;
+    result += `  ${playFor(performance).name}: ${format(amountFor(performance) / 100)} (${
+      performance.audience
+    } seats)\n`;
+    totalAmount += amountFor(performance);
   }
 
   result += `Amount owed is ${format(totalAmount / 100)}\n`;
